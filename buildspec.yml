@@ -7,37 +7,20 @@ phases:
   pre_build:
     commands:
       #installs dependencies into the node_modules/ directory
-      - npm install -f
-      - npm install next -g
+      - npm install
   build:
     commands:
       - echo Build started on `date`
-      - echo Compiling
-      - npm run build
+      - echo Compiling the Node.js code
   post_build:
     commands:
       - echo Build completed on `date`
 # Include only the files required for your application to run.
 artifacts:
   files:
-    - public/**/*
-    - .next/**/*
-    - package.json
-    - appspec.yml
+    - src/**/*
     - scripts/**/*
-    - api/**/*
-    - assets/**/*
-    - components/**/*
-    - context/**/*
-    - lib/**/*
-    - pages/**/*
-    - styles/**/*
-    - theme/**/*
-    - utils/**/*
-    - next.config.js
-    - postcss.config.js
-    - next-env.d.ts
-    - tailwind.config.js
-    - tsconfig.json
-    - .eslintrc.json
-    - .eslintignore
+    - .env
+    - appspec.yml
+    - buildspec.yml
+    - package.json

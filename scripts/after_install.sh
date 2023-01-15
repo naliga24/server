@@ -1,4 +1,5 @@
 #!/bin/bash
-cd /home/ec2-user/server
-npm install -f
-npm install pm2 -g
+mkdir /home/ubuntu/nodejs
+cd /home/ubuntu/nodejs
+
+sudo npm install
