@@ -1,5 +1,6 @@
 #!/bin/bash
-cd /home/ubuntu/nodejs
-npm run start
-echo "After Build"
+
+# Stop all servers and start the server as a daemon
+forever stopall
+forever start /home/ubuntu/nodejs/src/app.js
 
