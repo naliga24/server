@@ -167,12 +167,13 @@ const getTransactionApprove = async (req) => {
 
 const getTransactionSwap = async (req) => {
 	try {
-		const { fromToken, toToken, walletAddress, amount, chainId } = req.body;
+		const { fromToken, toToken, walletAddress, destReceiver, amount, chainId } = req.body;
 		const swapParams = {
 			fromTokenAddress: fromToken.address,
 			toTokenAddress: toToken.address,
 			amount,
 			fromAddress: walletAddress,
+			destReceiver, 
 			slippage: 1,
 			disableEstimate: false,
 			allowPartialFill: false,
