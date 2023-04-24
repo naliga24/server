@@ -81,6 +81,17 @@ const getTransactionSwap = async (req) => {
 	}
 };
 
+const getHealthCheck = async (req) => {
+	try {
+		const sentResult = await tokenService.getHealthCheck(req);
+		logger.info('Success getHealthCheck');
+		return await successResponseMapper(sentResult);
+	} catch (error) {
+		logger.error('Error getHealthCheck', error.message);
+		throw error;
+	}
+};
+
 module.exports = {
 	getTopTokens,
 	getTokenMetadata,
@@ -89,4 +100,5 @@ module.exports = {
 	getQuotePrice,
 	getTransactionApprove,
 	getTransactionSwap,
+	getHealthCheck,
 };

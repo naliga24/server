@@ -3,7 +3,7 @@ const axios = require('axios');
 const Web3 = require('web3');
 require('dotenv').config();
 const broadcastApiUrl = (chainId) => 'https://tx-gateway.1inch.io/v1.1/' + chainId + '/broadcast';
-const apiBaseUrl = 'https://api.1inch.io/v4.0/';
+const apiBaseUrl = 'https://api.1inch.io/v5.0/';
 const logger = log('Token-Service');
 
 const getTopTokens = async () => {
@@ -120,8 +120,14 @@ async function buildTxForSwap(chainId, swapParams) {
 const getSwapTokensAvailable = async (req) => {
 	try {
 		const { chainId } = req.query
-		const response = await axios.get(`https://api.1inch.io/v4.0/${chainId}/tokens`);
-		return response.data
+		// const response = await axios.get(`https://api.1inch.io/v4.0/${chainId}/tokens`);
+		// return response.data
+
+		const url = apiRequestUrl(chainId, '/tokens');
+		const response = await axios.get(url).then(res => {
+			return res.data;
+		});
+		return response;
 	} catch (error) {
 		logger.error('Error get Swap tokens available service', error.message);
 		throw error;
@@ -130,7 +136,7 @@ const getSwapTokensAvailable = async (req) => {
 
 const getQuotePrice = async (req) => {
 	try {
-		const { fromToken, toToken, walletAddress, amount, chainId } = req.body;
+		const { fromToken, toToken, walletAddress, amount, chainId, fee } = req.body;
 
 		const swapParams = {
 			fromTokenAddress: fromToken.address,
@@ -140,6 +146,7 @@ const getQuotePrice = async (req) => {
 			slippage: 1,
 			disableEstimate: false,
 			allowPartialFill: false,
+			fee,
 		};
 
 		const url = apiRequestUrl(chainId, '/quote', swapParams);
@@ -167,7 +174,7 @@ const getTransactionApprove = async (req) => {
 
 const getTransactionSwap = async (req) => {
 	try {
-		const { fromToken, toToken, walletAddress, destReceiver, amount, chainId } = req.body;
+		const { fromToken, toToken, walletAddress, destReceiver, amount, chainId, referrerAddress, fee } = req.body;
 		const swapParams = {
 			fromTokenAddress: fromToken.address,
 			toTokenAddress: toToken.address,
@@ -177,11 +184,27 @@ const getTransactionSwap = async (req) => {
 			slippage: 1,
 			disableEstimate: false,
 			allowPartialFill: false,
+			referrerAddress,
+			fee,
 		};
 		const response = await buildTxForSwap(chainId, swapParams);
 		return response;
 	} catch (error) {
 		logger.error('Error getTransactionSwap', error.message);
+		throw error;
+	}
+};
+
+const getHealthCheck = async (req) => {
+	try {
+		const { chainId } = req.query;
+		const url = apiRequestUrl(chainId, '/healthcheck');
+		const response = await axios.get(url).then(res => {
+			return res.data;
+		});
+		return response;
+	} catch (error) {
+		logger.error('Error getHealthCheck', error.message);
 		throw error;
 	}
 };
@@ -195,4 +218,5 @@ module.exports = {
 	getQuotePrice,
 	getTransactionApprove,
 	getTransactionSwap,
+	getHealthCheck,
 };

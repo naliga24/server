@@ -78,4 +78,14 @@ router.post('/getTransactionSwap', async (req, res, next) => {
 	}
 });
 
+router.get('/healthcheck', async (req, res, next) => {
+	try {
+		logger.info('request query :', req.query);
+		const result = await tokenController.getHealthCheck(req);
+		res.status(result.code).json(result);
+	} catch (error) {
+		handleError(error, "Something went wrong!", next);
+	}
+});
+
 module.exports = router;
