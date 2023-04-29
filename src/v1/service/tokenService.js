@@ -120,14 +120,14 @@ async function buildTxForSwap(chainId, swapParams) {
 const getSwapTokensAvailable = async (req) => {
 	try {
 		const { chainId } = req.query
-		// const response = await axios.get(`https://api.1inch.io/v4.0/${chainId}/tokens`);
-		// return response.data
+		const response = await axios.get(`https://api.1inch.io/v5.0/${chainId}/tokens`);
+		return response.data
 
-		const url = apiRequestUrl(chainId, '/tokens');
-		const response = await axios.get(url).then(res => {
-			return res.data;
-		});
-		return response;
+		// const url = apiRequestUrl(chainId, '/tokens');
+		// const response = await axios.get(url).then(res => {
+		// 	return res.data;
+		// });
+		// return response;
 	} catch (error) {
 		logger.error('Error get Swap tokens available service', error.message);
 		throw error;
@@ -197,12 +197,15 @@ const getTransactionSwap = async (req) => {
 
 const getHealthCheck = async (req) => {
 	try {
-		const { chainId } = req.query;
-		const url = apiRequestUrl(chainId, '/healthcheck');
-		const response = await axios.get(url).then(res => {
-			return res.data;
-		});
-		return response;
+		const { chainId } = req.query
+		const response = await axios.get(`https://api.1inch.io/v5.0/${chainId}/healthcheck`);
+		return response.data
+		// const { chainId } = req.query;
+		// const url = apiRequestUrl(chainId, '/healthcheck');
+		// const response = await axios.get(url).then(res => {
+		// 	return res.data;
+		// });
+		// return response;
 	} catch (error) {
 		logger.error('Error getHealthCheck', error.message);
 		throw error;
