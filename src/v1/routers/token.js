@@ -8,7 +8,15 @@ const logger = log('Token-router');
 const { middlewareValidation } = require('../middleware/middlewareValidation');
 const tokenController = require('../controller/tokenController');
 
-router.get('/getTopTokens', middlewareValidation, async (req, res, next) => {
+router.get('/testApi', async (req, res, next) => {
+	try {
+		res.status(200).json({data:"calling api working."});
+	} catch (error) {
+		handleError(error, "Something went wrong!", next);
+	}
+});
+
+router.get('/getTopTokens', async (req, res, next) => {
 	try {
 		logger.info('request body :', req.body);
 		const result = await tokenController.getTopTokens(req);
