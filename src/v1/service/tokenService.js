@@ -3,7 +3,7 @@ const axios = require('axios');
 const Web3 = require('web3');
 require('dotenv').config();
 const broadcastApiUrl = (chainId) => 'https://tx-gateway.1inch.io/v1.1/' + chainId + '/broadcast';
-const apiBaseUrl = 'https://api.1inch.io/v5.0/';
+const apiBaseUrl = 'https://api.1inch.io/v4.0/';
 const logger = log('Token-Service');
 
 const getTopTokens = async () => {
