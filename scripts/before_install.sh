@@ -2,8 +2,8 @@
 
 # Install node.js and npm
 curl -sL https://rpm.nodesource.com/setup_16.x | sudo -E bash -
-sudo yum update
-sudo yum upgrade
+# sudo yum update
+# sudo yum upgrade
 sudo yum install epel-release
 sudo yum install nodejs npm -y
 

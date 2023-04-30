@@ -53,24 +53,24 @@ const getTokenMetadata = async (req) => {
 	}
 };
 
-function apiRequestUrl(chainId, methodName, queryParams) {
+const apiRequestUrl = (chainId, methodName, queryParams) => {
 	return apiBaseUrl + chainId + methodName + '?' + (new URLSearchParams(queryParams)).toString();
 }
 
-async function checkAllowance(chainId, tokenAddress, walletAddress) {
+const checkAllowance = async (chainId, tokenAddress, walletAddress) => {
 	const allowance = await axios.get(apiRequestUrl(chainId, '/approve/allowance', { tokenAddress, walletAddress }))
 		.then(res => res.data.allowance);
 	return allowance;
 }
 
-async function signAndSendTransaction(privateKey, web3RpcUrl, chainId, transaction) {
+const signAndSendTransaction = async (privateKey, web3RpcUrl, chainId, transaction) => {
 	const web3 = new Web3(web3RpcUrl);
 	const { rawTransaction } = await web3.eth.accounts.signTransaction(transaction, privateKey);
 	const response = await broadCastRawTransaction(chainId, rawTransaction);
 	return response;
 }
 
-async function broadCastRawTransaction(chainId, rawTransaction) {
+const broadCastRawTransaction = async (chainId, rawTransaction) => {
 	const transactionHash = await axios({
 		url: broadcastApiUrl(chainId),
 		method: 'post',
@@ -81,7 +81,7 @@ async function broadCastRawTransaction(chainId, rawTransaction) {
 	return transactionHash;
 }
 
-async function buildTxForApproveTradeWithRouter(web3RpcUrl, chainId, tokenAddress, amount, walletAddress) {
+const buildTxForApproveTradeWithRouter = async (web3RpcUrl, chainId, tokenAddress, amount, walletAddress) => {
 	const web3 = new Web3(web3RpcUrl);
 	const url = apiRequestUrl(
 		chainId,
@@ -102,7 +102,7 @@ async function buildTxForApproveTradeWithRouter(web3RpcUrl, chainId, tokenAddres
 	};
 }
 
-async function buildTxForSwap(chainId, swapParams) {
+const buildTxForSwap = async (chainId, swapParams) => {
 	const url = apiRequestUrl(chainId, '/swap', swapParams);
 	const response = await axios.get(url,{
         validateStatus: function () {
@@ -120,14 +120,11 @@ async function buildTxForSwap(chainId, swapParams) {
 const getSwapTokensAvailable = async (req) => {
 	try {
 		const { chainId } = req.query
-		const response = await axios.get(`https://api.1inch.io/v5.0/${chainId}/tokens`);
-		return response.data
-
-		// const url = apiRequestUrl(chainId, '/tokens');
-		// const response = await axios.get(url).then(res => {
-		// 	return res.data;
-		// });
-		// return response;
+		const url = apiRequestUrl(chainId, '/tokens');
+		const response = await axios.get(url).then(res => {
+			return res.data;
+		});
+		return response;
 	} catch (error) {
 		logger.error('Error get Swap tokens available service', error.message);
 		throw error;
@@ -197,15 +194,12 @@ const getTransactionSwap = async (req) => {
 
 const getHealthCheck = async (req) => {
 	try {
-		const { chainId } = req.query
-		const response = await axios.get(`https://api.1inch.io/v5.0/${chainId}/healthcheck`);
-		return response.data
-		// const { chainId } = req.query;
-		// const url = apiRequestUrl(chainId, '/healthcheck');
-		// const response = await axios.get(url).then(res => {
-		// 	return res.data;
-		// });
-		// return response;
+		const { chainId } = req.query;
+		const url = apiRequestUrl(chainId, '/healthcheck');
+		const response = await axios.get(url).then(res => {
+			return res.data;
+		});
+		return response;
 	} catch (error) {
 		logger.error('Error getHealthCheck', error.message);
 		throw error;
