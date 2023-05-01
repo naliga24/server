@@ -11,7 +11,7 @@ const getTopTokens = async () => {
 		const result = {};
 		const response = await axios.get('https://sandbox-api.coinmarketcap.com/v1/cryptocurrency/listings/latest', {
 			headers: {
-				'X-CMC_PRO_API_KEY': process.env.COIN_MARKET_CAP_KEY,
+				'X-CMC_PRO_API_KEY': "172268b6-45dd-4b21-87db-4426a0a7c700",
 				'Accepts': 'application/json',
 			},
 			params: {
