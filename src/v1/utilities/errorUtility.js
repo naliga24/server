@@ -6,6 +6,7 @@ const handleError = (error, messageToFront, next) => {
 	}
 
 	Object.assign(error, { detail: messageToFront });
+	console.log("error=>", error);
 	// Sentry.captureException(error);
 	next(error);
 };
