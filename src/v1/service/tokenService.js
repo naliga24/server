@@ -54,7 +54,7 @@ const getTokenMetadata = async (req) => {
 };
 
 const apiRequestUrl = (chainId, methodName, queryParams) => {
-	return apiBaseUrl + chainId + methodName + '?' + (new URLSearchParams(queryParams)).toString();
+	return apiBaseUrl + chainId + methodName + '?' + (new URLSearchParams(queryParams))?.toString();
 }
 
 const checkAllowance = async (chainId, tokenAddress, walletAddress) => {
