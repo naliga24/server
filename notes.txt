@@ -1,0 +1,32 @@
+//setup nginx firwall https allow.
+sudo ufw allow 'Nginx HTTPS'
+sudo ufw enable
+sudo ufw status
+
+//setup keys cmd.
+sudo openssl genrsa -out /etc/ssl/private/3ether_keys/swap_token_app_ssl_certificate_secret.key
+sudo openssl req -new -key /etc/ssl/private/swap_token_app_ssl_certificate_secret.key -out /etc/ssl/private/3ether_keys/swap_token_app_ssl_certificate_secret.pem
+sudo openssl x509 -req -days 1825 -in /etc/ssl/private/3ether_keys/swap_token_app_ssl_certificate_secret.pem -signkey /etc/ssl/private/3ether_keys/swap_token_app_ssl_certificate_secret.key -out /etc/ssl/private/3ether_keys/swap_token_app_ssl_certificate.crt
+
+
+
+
+// nginx server setup
+server {
+    listen              443 ssl;
+    server_name         192.168.1.39:3031/api/v1;
+    ssl_certificate     /etc/ssl/private/3ether_keys/swap_token_app_ssl_certificate.crt;
+    ssl_certificate_key /etc/ssl/private/3ether_keys/swap_token_app_ssl_certificate_secret.key;
+    ssl_protocols       TLSv1 TLSv1.1 TLSv1.2 TLSv1.3;
+    ssl_ciphers         HIGH:!aNULL:!MD5;
+}
+
+//ssl keys location
+/etc/ssl/private/3ether_keys
+
+
+
+//DDclient cmd (https://ddclient.net/, https://mgw.dumatics.com/ddclient-on-fedora-2/)
+sudo apt install ddclient # Install ddClicent cmd.
+sudo nano /etc/ddclient.conf #Config DDclient file.
+sudo ddclient -daemon=0 -debug -verbose -noquiet  # Test DDCLIENTPermalink is success should see message => "SUCCESS: updating oxygen: good: IP address set to 92.117.273.56"

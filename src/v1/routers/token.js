@@ -10,7 +10,7 @@ const tokenController = require('../controller/tokenController');
 
 router.get('/testApi', async (req, res, next) => {
 	try {
-		res.status(200).json({data:"calling api working."});
+		res.status(200).json({data:"calling api working!!"});
 	} catch (error) {
 		handleError(error, "Something went wrong!", next);
 	}
