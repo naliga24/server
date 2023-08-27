@@ -1,5 +1,9 @@
 //setup nginx firwall https allow.
 sudo ufw allow 'Nginx HTTPS'
+sudo ufw allow http
+sudo ufw allow https
+sudo ufw allow 22 (allow ssh service)
+sudo ufw deny 'Apache'
 sudo ufw enable
 sudo ufw status
 
@@ -20,13 +24,51 @@ server {
     ssl_protocols       TLSv1 TLSv1.1 TLSv1.2 TLSv1.3;
     ssl_ciphers         HIGH:!aNULL:!MD5;
 }
-
 //ssl keys location
 /etc/ssl/private/3ether_keys
 
+
+//Apache 2 cmd
+systemctl enable apache2.service
+systemctl status apache2.service
+systemctl start apache2.service
+systemctl stop apache2.service
+sudo update-rc.d apache2 disable # Disable apache2 when system boot. https://askubuntu.com/questions/170640/how-do-i-stop-apache2-from-automatically-starting-on-boot
 
 
 //DDclient cmd (https://ddclient.net/, https://mgw.dumatics.com/ddclient-on-fedora-2/)
 sudo apt install ddclient # Install ddClicent cmd.
 sudo nano /etc/ddclient.conf #Config DDclient file.
 sudo ddclient -daemon=0 -debug -verbose -noquiet  # Test DDCLIENTPermalink is success should see message => "SUCCESS: updating oxygen: good: IP address set to 92.117.273.56"
+
+
+
+// netplan (setup static ip) /etc/netplan/00-installer-config.yaml
+sudo netplan try
+sudo netplan apply
+
+//install docker
+sudo apt-get install docker
+sudo apt-get install docker-compose
+
+
+//show ip command
+$ ip link show
+$ ip address show
+$ nmcli device status
+$ nmcli device show  (show complete with DOMAIN=api.3ether.io)
+$ nmcli connection show
+$ netstat -i
+$ ifconfig
+$ /sbin/ifconfig -a
+$ ls /sys/class/net/
+
+
+//Monotor cpu temperature (https://www.cyberciti.biz/faq/how-to-check-cpu-temperature-on-ubuntu-linux/)
+$ sudo apt install lm-sensors
+$ sensors
+
+
+//ssh
+/etc/init.d/ssh restart
+sudo nano /etc/ssh/ssh_config

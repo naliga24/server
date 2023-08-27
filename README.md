@@ -15,4 +15,7 @@ sudo docker ps
 sudo docker-compose ps
 sudo docker inspect {name}
 sudo docker-compose logs -f -t #View live log message.
+sudo docker stop {containner-id}
+sudo docker-compose build
+sudo docker update --restart=no {containner-id} #Stop contqainer to auto restart when boot
 ```
