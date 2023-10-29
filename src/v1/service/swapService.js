@@ -170,17 +170,25 @@ const getSwapTokensAvailable = async (req) => {
 
 const getQuotePrice = async (req) => {
   try {
-    const { fromToken, toToken, walletAddress, amount, chainId, fee } =
-      req.body;
+    const {
+      fromToken,
+      toToken,
+      walletAddress,
+      amount,
+      chainId,
+      fee,
+      slippage,
+      allowPartialFill,
+    } = req.body;
 
     const swapParams = {
       fromTokenAddress: fromToken.address,
       toTokenAddress: toToken.address,
       amount,
       fromAddress: walletAddress,
-      slippage: 1,
+      slippage,
       disableEstimate: false,
-      allowPartialFill: false,
+      allowPartialFill,
       fee,
     };
 
