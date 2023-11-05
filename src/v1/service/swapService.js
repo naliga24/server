@@ -244,7 +244,9 @@ const getTransactionSwap = async (req) => {
       fee,
       slippage,
       allowPartialFill,
+      gasPrice,
     } = req.body;
+
     const swapParams = {
       fromTokenAddress: fromToken.address,
       toTokenAddress: toToken.address,
@@ -256,6 +258,8 @@ const getTransactionSwap = async (req) => {
       disableEstimate: false,
       referrerAddress,
       fee,
+      includeGas: true,
+      gasPrice,
     };
     const response = await buildTxForSwap(chainId, swapParams);
     return response;

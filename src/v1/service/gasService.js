@@ -1,7 +1,7 @@
 const log = require("../utilities/logUtility");
 const axios = require("axios");
 require("dotenv").config();
-const apiBaseUrl = "https://api.1inch.dev/token/v1.2/";
+const apiBaseUrl = "https://api.1inch.dev/gas-price/v1.4/";
 const logger = log("Token-Service");
 
 axios.defaults.headers.common = {
@@ -19,35 +19,22 @@ const apiRequestUrl = (chainId, methodName, queryParams) => {
   );
 };
 
-const getTokensByChainId = async (req) => {
+const getGasPriceByChainId = async (req) => {
   try {
     const { chainId } = req.query;
     const url = apiRequestUrl(chainId, "/");
+    console.log("getGasPriceByChainId=>", url, process.env.ONEINCH_API_KEY);
     const response = await axios.get(url).then((res) => {
       return res.data;
     });
+    console.log("getGasPriceByChainId=>", url, response);
     return response;
   } catch (error) {
-    logger.error("Error getTokensByChainId", error.message);
-    throw error;
-  }
-};
-
-const getTokenByAddress = async (req) => {
-  try {
-    const { chainId, address } = req.query;
-    const url = apiRequestUrl(chainId, `/custom/${address}`);
-    const response = await axios.get(url).then((res) => {
-      return res.data;
-    });
-    return response;
-  } catch (error) {
-    logger.error("Error getTokenByAddress", error.message);
+    logger.error("Error getGasPriceByChainId", error.message);
     throw error;
   }
 };
 
 module.exports = {
-  getTokensByChainId,
-  getTokenByAddress,
+  getGasPriceByChainId,
 };
